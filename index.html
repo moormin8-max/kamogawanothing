@@ -173,7 +173,33 @@ function duckReaction(btn, e) {
   document.body.appendChild(flying);
   setTimeout(() => flying.remove(), 1500);
 }
+// 桜の花びらを作る関数
+function createSakura() {
+    const sakura = document.createElement('div');
+    sakura.innerHTML = '🌸';
+    sakura.className = 'sakura';
+    
+    // 落ち始める横の位置をランダムに
+    sakura.style.left = Math.random() * 100 + 'vw';
+    
+    // 花びらの大きさをランダムに（少し表情を出す）
+    const size = Math.random() * 15 + 10;
+    sakura.style.fontSize = size + 'px';
+    
+    // アニメーションの時間をランダムに（ひらひら感を出す）
+    const duration = Math.random() * 5 + 5;
+    sakura.style.animationDuration = duration + 's';
+    
+    document.body.appendChild(sakura);
 
+    // 画面下まで行ったら消す
+    setTimeout(() => {
+        sakura.remove();
+    }, duration * 1000);
+}
+
+// 0.5秒ごとに新しい桜を降らせる
+setInterval(createSakura, 500);
 // --- 📦 3. 通信・データ処理 ---
 function addToList(text, dateStr) {
   const card = document.createElement('div');
