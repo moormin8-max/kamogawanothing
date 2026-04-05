@@ -42,7 +42,27 @@
     @keyframes flyAway { 0% { transform: translate(0, 0) scale(1); opacity: 1; } 100% { transform: translate(40px, -150px) scale(2); opacity: 0; } }
     .duck-line { position: fixed; right: -100px; font-size: 28px; z-index: 1000; pointer-events: none; animation: crossRiverLine 12s linear forwards; }
     @keyframes crossRiverLine { from { transform: translateX(0); } to { transform: translateX(-130vw); } }
+.sakura {
+    position: fixed;
+    top: -20px;
+    z-index: 1; /* アヒルより後ろ、背景より前に */
+    pointer-events: none; /* クリックを邪魔しない */
+    user-select: none;
+    animation-name: fall;
+    animation-timing-function: linear;
+}
 
+@keyframes fall {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        /* 斜めに落ちながら、少し回転させる */
+        transform: translateY(110vh) translateX(100px) rotate(360deg);
+        opacity: 0;
+    }
+}
     /* --- 5. 一覧エリア --- */
     .archive-section { max-width: 320px; margin: 0 auto; padding: 0 10px; position: relative; z-index: 20; }
     .log-item { margin-bottom: 10px; padding: 10px 15px; font-size: 13px; border-radius: 15px; }
