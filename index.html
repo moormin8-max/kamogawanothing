@@ -186,14 +186,14 @@ function createSakura() {
     sakura.innerHTML = '🌸';
     sakura.className = 'sakura';
     sakura.style.left = Math.random() * 100 + 'vw';
-    const size = Math.random() * 15 + 10;
+    const size = Math.random() * 10 + 10;
     sakura.style.fontSize = size + 'px';
-    const duration = Math.random() * 5 + 5;
+    const duration = Math.random() * 5 + 7;
     sakura.style.animationDuration = duration + 's';
     document.body.appendChild(sakura);
     setTimeout(() => { sakura.remove(); }, duration * 1000);
 }
-setInterval(createSakura, 500);
+setInterval(createSakura, 2000);
 
 // --- 📦 通信・データ ---
 function addToList(text, dateStr) {
