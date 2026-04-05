@@ -38,31 +38,22 @@
     @keyframes flowDown { from { top: -50px; opacity: 0; } 10% { opacity: 0.8; } 90% { opacity: 0.8; } to { top: 120%; opacity: 0; } }
     @keyframes waveSway { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(15px); } }
 
+    /* 🦆 鴨の演出設定 */
     .flying-duck { position: fixed; font-size: 24px; pointer-events: none; z-index: 1000; animation: flyAway 1.5s ease-out forwards; }
     @keyframes flyAway { 0% { transform: translate(0, 0) scale(1); opacity: 1; } 100% { transform: translate(40px, -150px) scale(2); opacity: 0; } }
     .duck-line { position: fixed; right: -100px; font-size: 28px; z-index: 1000; pointer-events: none; animation: crossRiverLine 12s linear forwards; }
     @keyframes crossRiverLine { from { transform: translateX(0); } to { transform: translateX(-130vw); } }
-.sakura {
-    position: fixed;
-    top: -20px;
-    z-index: 1; /* アヒルより後ろ、背景より前に */
-    pointer-events: none; /* クリックを邪魔しない */
-    user-select: none;
-    animation-name: fall;
-    animation-timing-function: linear;
-}
 
-@keyframes fall {
-    0% {
-        transform: translateY(0) rotate(0deg);
-        opacity: 1;
+    /* 🌸 桜の設定 */
+    .sakura {
+      position: fixed; top: -20px; z-index: 5; pointer-events: none; user-select: none;
+      animation-name: fall; animation-timing-function: linear; animation-fill-mode: forwards;
     }
-    100% {
-        /* 斜めに落ちながら、少し回転させる */
-        transform: translateY(110vh) translateX(100px) rotate(360deg);
-        opacity: 0;
+    @keyframes fall {
+      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(110vh) translateX(100px) rotate(360deg); opacity: 0; }
     }
-}
+
     /* --- 5. 一覧エリア --- */
     .archive-section { max-width: 320px; margin: 0 auto; padding: 0 10px; position: relative; z-index: 20; }
     .log-item { margin-bottom: 10px; padding: 10px 15px; font-size: 13px; border-radius: 15px; }
@@ -71,7 +62,6 @@
 
     #archive-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #1a237e; overflow-y: auto; z-index: 9999; padding: 40px 20px; color: white; }
     .archive-card { border-bottom: 1px solid rgba(255,255,255,0.1); padding: 20px 10px; }
-    /* 🌟 日時のスタイル */
     .log-date { font-size: 10px; opacity: 0.4; margin-top: 4px; display: block; }
   </style>
 </head>
@@ -92,7 +82,6 @@
   </div>
 
   <div class="post-section">
-  
    <p>貴方と鴨川との思い出を置いていく場所です</p>
     <div class="glass-card">
       <textarea id="input" placeholder="記録を書く(140字以内)"></textarea>
@@ -119,7 +108,7 @@
 </div>
 
 <script>
-// --- ⚙️ 1. Supabase設定 ---
+// --- ⚙️ Supabase設定 ---
 const supabaseUrl = 'https://goayludvoaulmsirgemh.supabase.co'; 
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdvYXlsdWR2b2F1bG1zaXJnZW1oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQxNjI0MDAsImV4cCI6MjA4OTczODQwMH0.RgLz-wzk8JqVkei8HCJRWTsM-I4SoWclGBPhPv2mE-g'; 
 
@@ -139,16 +128,13 @@ const riverBox = document.getElementById('river-box');
 const input = document.getElementById('input');
 let totalDuckCount = 0; 
 
-// 🌟 日時を綺麗に変換する関数
 function formatDate(dateStr) {
   if (!dateStr) return "";
   const date = new Date(dateStr);
-  return date.toLocaleString('ja-JP', { 
-    month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' 
-  });
+  return date.toLocaleString('ja-JP', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
 }
 
-// --- 🦆 2. 演出機能 ---
+// --- 🦆 演出機能 ---
 function createFlowItem(text, isDuck = false) {
   const item = document.createElement('div');
   item.className = "flow-item";
@@ -193,34 +179,23 @@ function duckReaction(btn, e) {
   document.body.appendChild(flying);
   setTimeout(() => flying.remove(), 1500);
 }
-// 桜の花びらを作る関数
+
+// 🌸 桜を降らせる
 function createSakura() {
     const sakura = document.createElement('div');
     sakura.innerHTML = '🌸';
     sakura.className = 'sakura';
-    
-    // 落ち始める横の位置をランダムに
     sakura.style.left = Math.random() * 100 + 'vw';
-    
-    // 花びらの大きさをランダムに（少し表情を出す）
     const size = Math.random() * 15 + 10;
     sakura.style.fontSize = size + 'px';
-    
-    // アニメーションの時間をランダムに（ひらひら感を出す）
     const duration = Math.random() * 5 + 5;
     sakura.style.animationDuration = duration + 's';
-    
     document.body.appendChild(sakura);
-
-    // 画面下まで行ったら消す
-    setTimeout(() => {
-        sakura.remove();
-    }, duration * 1000);
+    setTimeout(() => { sakura.remove(); }, duration * 1000);
 }
-
-// 0.5秒ごとに新しい桜を降らせる
 setInterval(createSakura, 500);
-// --- 📦 3. 通信・データ処理 ---
+
+// --- 📦 通信・データ ---
 function addToList(text, dateStr) {
   const card = document.createElement('div');
   card.className = "glass-card log-item";
@@ -253,15 +228,9 @@ async function showArchive() {
   document.getElementById('main-view').style.display = 'none';
   const list = document.getElementById('full-archive-list');
   list.innerHTML = "川底をさらっています...";
-  // 🌟 created_at（日時）も一緒に取得
   const { data } = await _supabase.from('logs').select('content, created_at').order('created_at', { ascending: false });
   if (data) {
-    list.innerHTML = data.map(log => `
-      <div class="archive-card">
-        <div>${log.content}</div>
-        <span class="log-date">${formatDate(log.created_at)}</span>
-      </div>
-    `).join('');
+    list.innerHTML = data.map(log => `<div class="archive-card"><div>${log.content}</div><span class="log-date">${formatDate(log.created_at)}</span></div>`).join('');
   }
 }
 
