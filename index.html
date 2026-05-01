@@ -1,8 +1,9 @@
+
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <!-- 安定版の接続部品を使用 -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.7/dist/umd/supabase.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>鴨川でなにもしない</title>
@@ -39,11 +40,13 @@
     @keyframes flowDown { from { top: -50px; opacity: 0; } 10% { opacity: 0.8; } 90% { opacity: 0.8; } to { top: 120%; opacity: 0; } }
     @keyframes waveSway { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(15px); } }
 
+    /* 🦆 鴨の演出設定 */
     .flying-duck { position: fixed; font-size: 24px; pointer-events: none; z-index: 1000; animation: flyAway 1.5s ease-out forwards; }
     @keyframes flyAway { 0% { transform: translate(0, 0) scale(1); opacity: 1; } 100% { transform: translate(40px, -150px) scale(2); opacity: 0; } }
     .duck-line { position: fixed; right: -100px; font-size: 28px; z-index: 1000; pointer-events: none; animation: crossRiverLine 12s linear forwards; }
     @keyframes crossRiverLine { from { transform: translateX(0); } to { transform: translateX(-130vw); } }
 
+    /* 🌸 桜の設定 */
     .sakura {
       position: fixed; top: -20px; z-index: 5; pointer-events: none; user-select: none;
       animation-name: fall; animation-timing-function: linear; animation-fill-mode: forwards;
@@ -55,7 +58,7 @@
 
     /* --- 5. 一覧エリア --- */
     .archive-section { max-width: 320px; margin: 0 auto; padding: 0 10px; position: relative; z-index: 20; }
-    .log-item { margin-bottom: 10px; padding: 10px 15px; font-size: 13px; border-radius: 15px; margin-top: 10px; }
+    .log-item { margin-bottom: 10px; padding: 10px 15px; font-size: 13px; border-radius: 15px; }
     .duck-btn { border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.1); border-radius: 6px; padding: 2px 8px; cursor: pointer; color: inherit; font-size: 11px; }
     .more-link { display: inline-block; margin-top: 20px; color: inherit; text-decoration: none; font-size: 11px; opacity: 0.5; padding: 8px 20px; border: 1px solid rgba(255,255,255,0.3); border-radius: 999px; cursor: pointer; }
 
@@ -92,7 +95,7 @@
     <div class="river-gap"></div>
     <div class="archive-section">
       <h2 style="text-align:center; opacity:0.3; font-size:15px; margin-bottom:15px;">みんなの記録</h2>
-      <div id="log-list">川底をさらっています...</div>
+      <div id="log-list"></div>
       <div style="text-align: center; margin-bottom: 60px;">
         <div class="more-link" onclick="showArchive()">もっと遠くの誰かの記録を見る</div>
       </div>
@@ -113,12 +116,12 @@ const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS
 
 let _supabase;
 function initSupabase() {
-  if (window.supabase && window.supabase.createClient) {
+  if (window.supabase) {
     _supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
     loadLogs();
     startConstantDucks();
   } else {
-    setTimeout(initSupabase, 200);
+    setTimeout(initSupabase, 100);
   }
 }
 
@@ -167,7 +170,7 @@ function spawnDuckLine() {
 
 function duckReaction(btn, e) {
   const span = btn.querySelector('span');
-  if (span) span.innerText = parseInt(span.innerText) + 1;
+  span.innerText = parseInt(span.innerText) + 1;
   totalDuckCount++;
   if (totalDuckCount % 50 === 0) spawnDuckLine();
   const flying = document.createElement('div');
@@ -179,6 +182,7 @@ function duckReaction(btn, e) {
   setTimeout(() => flying.remove(), 1500);
 }
 
+// 🌸 桜を降らせる
 function createSakura() {
     const sakura = document.createElement('div');
     sakura.innerHTML = '🌸';
@@ -189,7 +193,7 @@ function createSakura() {
     const duration = Math.random() * 5 + 7;
     sakura.style.animationDuration = duration + 's';
     document.body.appendChild(sakura);
-    setTimeout(() => sakura.remove(), duration * 1000);
+    setTimeout(() => { sakura.remove(); }, duration * 1000);
 }
 setInterval(createSakura, 4000);
 
@@ -203,12 +207,10 @@ function addToList(text, dateStr) {
 
 async function loadLogs() {
   if (!_supabase) return;
-  const { data, error } = await _supabase.from('logs').select('content, created_at').order('created_at', { ascending: false }).limit(10);
+  const { data } = await _supabase.from('logs').select('content, created_at').order('created_at', { ascending: false }).limit(10);
   if (data) {
     logList.innerHTML = "";
     [...data].reverse().forEach(log => addToList(log.content, log.created_at));
-  } else if (error) {
-    logList.innerHTML = "読み込みに失敗しました。";
   }
 }
 
