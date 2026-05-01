@@ -6,7 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>鴨川でなにもしない</title>
   <style>
-    /* --- 1. 基本設定 --- */
     body { margin: 0; font-family: "Hiragino Mincho ProN", serif; transition: background 1.5s ease, color 1.5s ease; line-height: 1.6; overflow-x: hidden; }
     body::before {
       content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -15,53 +14,27 @@
     }
     @keyframes waterRipple { 0% { opacity: 0.3; } 100% { opacity: 0.4; } }
 
-    /* --- 2. 写真エリア --- */
     .hero {
       height: 45vh; background: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.4)), url("https://i.imgur.com/QkVzloZ.jpg") center/cover no-repeat;
       display: flex; flex-direction: column; justify-content: flex-end; padding: 30px; color: white; position: relative; z-index: 10;
     }
     .hero h1 { margin: 0; font-size: 26px; margin-bottom: 10px; }
     .hero-description p { margin: 2px 0; font-size: 13px; opacity: 0.9; text-shadow: 1px 1px 4px rgba(0,0,0,0.6); }
-    .user-status { font-size: 11px; opacity: 0.7; margin-top: 12px; display: flex; align-items: center; gap: 5px; }
-    .pulse-icon { width: 6px; height: 6px; background: #66ff66; border-radius: 50%; display: inline-block; box-shadow: 0 0 8px #66ff66; animation: pulse 2s infinite; }
 
-    /* --- 3. 投稿フォーム --- */
     .post-section { padding: 20px; max-width: 450px; margin: 0 auto; position: relative; z-index: 100; }
-    .glass-card { backdrop-filter: blur(15px); border: none; border-radius: 20px; padding: 15px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); transition: background 1.5s ease, color 1.5s ease; background: rgba(255, 255, 255, 0.1); }
+    .glass-card { backdrop-filter: blur(15px); border-radius: 20px; padding: 15px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); background: rgba(255, 255, 255, 0.1); color: inherit; }
     textarea { width: 100%; height: 50px; border: none; border-radius: 10px; padding: 10px; font-size: 14px; outline: none; resize: none; font-family: inherit; background: rgba(255, 255, 255, 0.15); color: inherit; }
-    .send-btn { margin-top: 10px; width: 100%; border: none; background: rgba(255, 255, 255, 0.2); color: inherit; padding: 10px; border-radius: 999px; cursor: pointer; border: 1px solid rgba(255, 255, 255, 0.2); font-size: 13px; }
+    .send-btn { margin-top: 10px; width: 100%; border: none; background: rgba(255, 255, 255, 0.2); color: inherit; padding: 10px; border-radius: 999px; cursor: pointer; border: 1px solid rgba(255, 255, 255, 0.2); }
 
-    /* --- 4. 川エリア --- */
     .river-container { position: relative; width: 100%; min-height: 400px; padding-bottom: 40px; overflow: hidden; }
-    .river-gap { height: 300px; width: 100%; }
-    .flow-item { position: absolute; white-space: nowrap; color: inherit; animation: flowDown 30s linear forwards, waveSway 4s infinite ease-in-out; font-size: 15px; z-index: 10; pointer-events: none; }
+    .flow-item { position: absolute; white-space: nowrap; animation: flowDown 30s linear forwards; font-size: 15px; z-index: 10; pointer-events: none; }
     @keyframes flowDown { from { top: -50px; opacity: 0; } 10% { opacity: 0.8; } 90% { opacity: 0.8; } to { top: 120%; opacity: 0; } }
-    @keyframes waveSway { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(15px); } }
 
-    /* 🦆 鴨の演出設定 */
-    .flying-duck { position: fixed; font-size: 24px; pointer-events: none; z-index: 1000; animation: flyAway 1.5s ease-out forwards; }
-    @keyframes flyAway { 0% { transform: translate(0, 0) scale(1); opacity: 1; } 100% { transform: translate(40px, -150px) scale(2); opacity: 0; } }
-    .duck-line { position: fixed; right: -100px; font-size: 28px; z-index: 1000; pointer-events: none; animation: crossRiverLine 12s linear forwards; }
-    @keyframes crossRiverLine { from { transform: translateX(0); } to { transform: translateX(-130vw); } }
+    .sakura { position: fixed; top: -20px; z-index: 5; pointer-events: none; animation-name: fall; animation-timing-function: linear; }
+    @keyframes fall { 0% { transform: translateY(0) rotate(0deg); opacity: 1; } 100% { transform: translateY(110vh) translateX(100px) rotate(360deg); opacity: 0; } }
 
-    /* 🌸 桜の設定 */
-    .sakura {
-      position: fixed; top: -20px; z-index: 5; pointer-events: none; user-select: none;
-      animation-name: fall; animation-timing-function: linear; animation-fill-mode: forwards;
-    }
-    @keyframes fall {
-      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-      100% { transform: translateY(110vh) translateX(100px) rotate(360deg); opacity: 0; }
-    }
-
-    /* --- 5. 一覧エリア --- */
     .archive-section { max-width: 320px; margin: 0 auto; padding: 0 10px; position: relative; z-index: 20; }
     .log-item { margin-bottom: 10px; padding: 10px 15px; font-size: 13px; border-radius: 15px; }
-    .duck-btn { border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.1); border-radius: 6px; padding: 2px 8px; cursor: pointer; color: inherit; font-size: 11px; }
-    .more-link { display: inline-block; margin-top: 20px; color: inherit; text-decoration: none; font-size: 11px; opacity: 0.5; padding: 8px 20px; border: 1px solid rgba(255,255,255,0.3); border-radius: 999px; cursor: pointer; }
-
-    #archive-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #1a237e; overflow-y: auto; z-index: 9999; padding: 40px 20px; color: white; }
-    .archive-card { border-bottom: 1px solid rgba(255,255,255,0.1); padding: 20px 10px; }
     .log-date { font-size: 10px; opacity: 0.4; margin-top: 4px; display: block; }
   </style>
 </head>
@@ -73,16 +46,11 @@
     <div class="hero-description">
       <p>意味もなくそこにいた</p> 
       <p>なにもしなくていい場所。</p>
-      <p>だけど、なにかした私たちの記録。</p>
-      <div class="user-status">
-        <span class="pulse-icon"></span>
-        <span>いま <span id="people-count">--</span>人が鴨川にいます</span>
-      </div>
     </div>
   </div>
 
   <div class="post-section">
-   <p>貴方と鴨川との思い出を置いていく場所です</p>
+    <p>貴方と鴨川との思い出を置いていく場所です</p>
     <div class="glass-card">
       <textarea id="input" placeholder="記録を書く(140字以内)"></textarea>
       <button class="send-btn" onclick="handlePost()">放流する</button>
@@ -90,25 +58,14 @@
   </div>
 
   <div class="river-container" id="river-box">
-    <div class="river-gap"></div>
     <div class="archive-section">
       <h2 style="text-align:center; opacity:0.3; font-size:15px; margin-bottom:15px;">みんなの記録</h2>
       <div id="log-list"></div>
-      <div style="text-align: center; margin-bottom: 60px;">
-        <div class="more-link" onclick="showArchive()">もっと遠くの誰かの記録を見る</div>
-      </div>
     </div>
   </div>
 </div>
 
-<div id="archive-overlay">
-  <h2 style="text-align:center; font-weight:normal; letter-spacing:0.2em;">記録の底</h2>
-  <div id="full-archive-list" style="max-width:500px; margin:0 auto;"></div>
-  <button onclick="hideArchive()" style="display:block; margin:40px auto; background:none; border:1px solid white; color:white; padding:10px 30px; border-radius:9999px; cursor:pointer;">川面へ戻る</button>
-</div>
-
 <script>
-// --- ⚙️ Supabase設定 ---
 const supabaseUrl = 'https://goayludvoaulmsirgemh.supabase.co'; 
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdvYXlsdWR2b2F1bG1zaXJnZW1oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQxNjI0MDAsImV4cCI6MjA4OTczODQwMH0.RgLz-wzk8JqVkei8HCJRWTsM-I4SoWclGBPhPv2mE-g'; 
 
@@ -117,16 +74,13 @@ function initSupabase() {
   if (window.supabase) {
     _supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
     loadLogs();
-    startConstantDucks();
   } else {
     setTimeout(initSupabase, 100);
   }
 }
 
 const logList = document.getElementById('log-list');
-const riverBox = document.getElementById('river-box');
 const input = document.getElementById('input');
-let totalDuckCount = 0; 
 
 function formatDate(dateStr) {
   if (!dateStr) return "";
@@ -134,81 +88,29 @@ function formatDate(dateStr) {
   return date.toLocaleString('ja-JP', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
 }
 
-// --- 🦆 演出機能 ---
-function createFlowItem(text, isDuck = false) {
-  const item = document.createElement('div');
-  item.className = "flow-item";
-  item.style.left = (Math.random() * 80 + 10) + "%";
-  item.innerText = isDuck ? "🦆" : text;
-  riverBox.appendChild(item);
-  setTimeout(() => item.remove(), 30000);
-}
-
-function startConstantDucks() {
-  const nextDuck = () => {
-    createFlowItem("", true);
-    setTimeout(nextDuck, Math.floor(Math.random() * 5000) + 3000);
-  };
-  nextDuck();
-}
-
-function spawnDuckLine() {
-  const lineY = (Math.random() * 60 + 20) + "vh";
-  for (let i = 0; i < 10; i++) {
-    setTimeout(() => {
-      const duck = document.createElement('div');
-      duck.className = "duck-line";
-      duck.innerText = "🦆";
-      duck.style.top = lineY;
-      document.body.appendChild(duck);
-      setTimeout(() => duck.remove(), 13000);
-    }, i * 600);
-  }
-}
-
-function duckReaction(btn, e) {
-  const span = btn.querySelector('span');
-  span.innerText = parseInt(span.innerText) + 1;
-  totalDuckCount++;
-  if (totalDuckCount % 50 === 0) spawnDuckLine();
-  const flying = document.createElement('div');
-  flying.className = "flying-duck";
-  flying.innerText = "🦆";
-  flying.style.left = e.clientX + "px";
-  flying.style.top = e.clientY + "px";
-  document.body.appendChild(flying);
-  setTimeout(() => flying.remove(), 1500);
-}
-
-// 🌸 桜を降らせる
 function createSakura() {
     const sakura = document.createElement('div');
     sakura.innerHTML = '🌸';
     sakura.className = 'sakura';
     sakura.style.left = Math.random() * 100 + 'vw';
-    const size = Math.random() * 10 + 10;
-    sakura.style.fontSize = size + 'px';
     const duration = Math.random() * 5 + 7;
     sakura.style.animationDuration = duration + 's';
     document.body.appendChild(sakura);
-    setTimeout(() => { sakura.remove(); }, duration * 1000);
+    setTimeout(() => sakura.remove(), duration * 1000);
 }
-setInterval(createSakura, 4000);
-
-// --- 📦 通信・データ ---
-function addToList(text, dateStr) {
-  const card = document.createElement('div');
-  card.className = "glass-card log-item";
-  card.innerHTML = `<div>${text}</div><span class="log-date">${formatDate(dateStr)}</span><div style="text-align:right; margin-top:5px;"><button class="duck-btn" onclick="duckReaction(this, event)">🦆 <span>0</span></button></div>`;
-  logList.prepend(card);
-}
+setInterval(createSakura, 3000);
 
 async function loadLogs() {
   if (!_supabase) return;
-  const { data } = await _supabase.from('logs').select('content, created_at').order('created_at', { ascending: false }).limit(10);
+  const { data, error } = await _supabase.from('logs').select('content, created_at').order('created_at', { ascending: false }).limit(10);
   if (data) {
     logList.innerHTML = "";
-    [...data].reverse().forEach(log => addToList(log.content, log.created_at));
+    data.forEach(log => {
+      const card = document.createElement('div');
+      card.className = "glass-card log-item";
+      card.innerHTML = `<div>${log.content}</div><span class="log-date">${formatDate(log.created_at)}</span>`;
+      logList.appendChild(card);
+    });
   }
 }
 
@@ -217,42 +119,19 @@ async function handlePost() {
   if(!text || !_supabase) return;
   const { error } = await _supabase.from('logs').insert([{ content: text }]);
   if (!error) {
-    createFlowItem(text); 
     input.value = "";
     loadLogs();
   }
 }
 
-async function showArchive() {
-  document.getElementById('archive-overlay').style.display = 'block';
-  document.getElementById('main-view').style.display = 'none';
-  const list = document.getElementById('full-archive-list');
-  list.innerHTML = "川底をさらっています...";
-  const { data } = await _supabase.from('logs').select('content, created_at').order('created_at', { ascending: false });
-  if (data) {
-    list.innerHTML = data.map(log => `<div class="archive-card"><div>${log.content}</div><span class="log-date">${formatDate(log.created_at)}</span></div>`).join('');
-  }
-}
-
-function hideArchive() {
-  document.getElementById('archive-overlay').style.display = 'none';
-  document.getElementById('main-view').style.display = 'block';
-}
-
 function applyTheme() {
   const hr = new Date().getHours();
-  const isNight = (hr >= 17 || hr < 5);
-  document.body.style.backgroundColor = isNight ? "#1a237e" : "#81d4fa";
-  document.body.style.color = isNight ? "white" : "#333";
+  document.body.style.backgroundColor = (hr >= 17 || hr < 5) ? "#1a237e" : "#81d4fa";
+  document.body.style.color = (hr >= 17 || hr < 5) ? "white" : "#333";
 }
 
 applyTheme();
 initSupabase();
-
-setInterval(() => {
-  const el = document.getElementById('people-count');
-  if(el) el.innerText = Math.floor(Math.random() * 20) + 25;
-}, 12000);
 </script>
 </body>
 </html>
